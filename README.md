@@ -15,29 +15,34 @@ No more updating versions in multiple places.
 
 ## Setup
 
-### 1. Add version entries to `libs.versions.toml`
+### 1. Add to `libs.versions.toml`
 
 ```toml
 [versions]
-app-version-code = "10"
+app-version-code = "9"
 app-version-name = "1.0"
+
+kmp-app-version = "1.0.0"
+
+[plugins]
+kmp-app-version = { id = "io.github.adrcotfas.kmp-app-version", version.ref = "kmp-app-version" }
 ```
 
 ### 2. Apply the plugin
 
-In your **root** `build.gradle.kts` (required for iOS support):
+In your **root** `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("io.github.adrcotfas.kmp-app-version")
+    alias(libs.plugins.kmp.app.version) apply false
 }
 ```
 
-In your **Android app module** `build.gradle.kts` (required for Android support):
+In your **Android app module** `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("io.github.adrcotfas.kmp-app-version")
+    alias(libs.plugins.kmp.app.version)
 }
 ```
 
