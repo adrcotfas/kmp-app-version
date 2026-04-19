@@ -39,39 +39,33 @@ tasks.test {
 }
 
 mavenPublishing {
-    publishToMavenCentral()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
     signAllPublications()
     coordinates(group.toString(), "kmp-app-version", version.toString())
-}
-
-publishing {
-    publications.withType<MavenPublication>().configureEach {
-        if (name.endsWith("PluginMarkerMaven")) return@configureEach
-        pom {
-            name = pluginName
-            description = pluginDescription
-            inceptionYear = "2026"
-            url = pluginUrl
-            licenses {
-                license {
-                    name = "The Apache License, Version 2.0"
-                    url  = "https://www.apache.org/licenses/LICENSE-2.0.txt"
-                    distribution = "repo"
-                }
+    pom {
+        name = pluginName
+        description = pluginDescription
+        inceptionYear = "2026"
+        url = pluginUrl
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url  = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "repo"
             }
-            developers {
-                developer {
-                    id           = "adrcotfas"
-                    name         = "Adrian Cotfas"
-                    email        = "adrcotfas@duck.com"
-                    url          = "https://github.com/adrcotfas"
-                }
+        }
+        developers {
+            developer {
+                id           = "adrcotfas"
+                name         = "Adrian Cotfas"
+                email        = "adrcotfas@duck.com"
+                url          = "https://github.com/adrcotfas"
             }
-            scm {
-                url                 = pluginUrl
-                connection          = "scm:git:git://github.com/adrcotfas/kmp-app-version.git"
-                developerConnection = "scm:git:ssh://git@github.com/adrcotfas/kmp-app-version.git"
-            }
+        }
+        scm {
+            url                 = pluginUrl
+            connection          = "scm:git:git://github.com/adrcotfas/kmp-app-version.git"
+            developerConnection = "scm:git:ssh://git@github.com/adrcotfas/kmp-app-version.git"
         }
     }
 }
