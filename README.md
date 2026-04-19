@@ -19,7 +19,7 @@ No more updating versions in multiple places.
 
 ```toml
 [versions]
-app-version-code = "9"
+app-version-code = "1"
 app-version-name = "1.0"
 
 kmp-app-version = "1.0.0"
@@ -34,7 +34,7 @@ In your **root** `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    alias(libs.plugins.kmp.app.version) apply false
+    alias(libs.plugins.kmp.app.version)
 }
 ```
 
@@ -48,21 +48,9 @@ plugins {
 
 You can remove the hardcoded `versionCode`/`versionName` from your `android { defaultConfig { } }` block; the plugin overrides them.
 
-### 3. (Optional) Configure
-
-If your version catalog keys differ from the defaults, or you want to specify the xcconfig path explicitly:
-
-```kotlin
-kmpAppVersion {
-    versionCodeKey = "my-version-code"   // default: "app-version-code"
-    versionNameKey = "my-version-name"   // default: "app-version-name"
-    xcconfigFile   = file("iosApp/Configuration/Config.xcconfig")  // auto-detected if omitted
-}
-```
-
 ## iOS integration
 
-The plugin auto-detects your `.xcconfig` file (the one containing `CURRENT_PROJECT_VERSION=`) and updates it before any KMP iOS framework compilation task runs (`link*Ios*`, `embedAndSignAppleFrameworkForXcode`). This means iOS builds from Android Studio work automatically.
+The plugin auto-detects your `.xcconfig` file by looking for one containing `CURRENT_PROJECT_VERSION=`, and updates it before any KMP iOS framework compilation task runs (`link*Ios*`, `embedAndSignAppleFrameworkForXcode`). This means iOS builds from Android Studio work automatically.
 
 ### For Xcode-only builds
 
