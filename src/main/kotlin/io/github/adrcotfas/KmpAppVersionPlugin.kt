@@ -8,28 +8,23 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.provider.Provider
 import java.io.File
 
+private const val VERSION_CODE_KEY = "app-version-code"
+private const val VERSION_NAME_KEY = "app-version-name"
+
 class KmpAppVersionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val ext = project.extensions.create("kmpAppVersion", KmpAppVersionExtension::class.java)
-        ext.versionCodeKey.convention("app-version-code")
-        ext.versionNameKey.convention("app-version-name")
-
         val catalog: Provider<VersionCatalog> = project.providers.provider {
             val catalogs = project.rootProject.extensions.findByType(VersionCatalogsExtension::class.java)
             catalogs?.find("libs")?.orElse(null)
                 ?: error("kmp-app-version: no version catalog named 'libs' found")
         }
-        val versionCode: Provider<String> = ext.versionCodeKey.flatMap { key ->
-            catalog.map { c ->
-                c.findVersion(key).orElse(null)?.requiredVersion
-                    ?: error("kmp-app-version: '$key' not found in libs.versions.toml")
-            }
+        val versionCode: Provider<String> = catalog.map { c ->
+            c.findVersion(VERSION_CODE_KEY).orElse(null)?.requiredVersion
+                ?: error("kmp-app-version: '$VERSION_CODE_KEY' not found in libs.versions.toml")
         }
-        val versionName: Provider<String> = ext.versionNameKey.flatMap { key ->
-            catalog.map { c ->
-                c.findVersion(key).orElse(null)?.requiredVersion
-                    ?: error("kmp-app-version: '$key' not found in libs.versions.toml")
-            }
+        val versionName: Provider<String> = catalog.map { c ->
+            c.findVersion(VERSION_NAME_KEY).orElse(null)?.requiredVersion
+                ?: error("kmp-app-version: '$VERSION_NAME_KEY' not found in libs.versions.toml")
         }
 
         project.pluginManager.withPlugin("com.android.application") {
@@ -46,9 +41,8 @@ class KmpAppVersionPlugin : Plugin<Project> {
         if (project == project.rootProject) {
             val projectDir: File = project.projectDir
             val xcconfigProvider: Provider<File> = project.providers.provider {
-                ext.xcconfigFile.orNull?.asFile
-                    ?: findXcconfig(projectDir)
-                    ?: error("kmp-app-version: no xcconfig with CURRENT_PROJECT_VERSION found. Set xcconfigFile in kmpAppVersion { }.")
+                findXcconfig(projectDir)
+                    ?: error("kmp-app-version: no xcconfig with CURRENT_PROJECT_VERSION found.")
             }
 
             project.tasks.register("syncIosVersion") {

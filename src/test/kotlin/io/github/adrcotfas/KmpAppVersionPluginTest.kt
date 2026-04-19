@@ -59,14 +59,7 @@ class KmpAppVersionPluginTest {
             )
         }
 
-        buildFile.writeText(
-            """
-            plugins { id("io.github.adrcotfas.kmp-app-version") }
-            kmpAppVersion {
-                xcconfigFile = file("iosApp/Config.xcconfig")
-            }
-            """.trimIndent()
-        )
+        buildFile.writeText("plugins { id(\"io.github.adrcotfas.kmp-app-version\") }")
 
         val result = runner("syncIosVersion").build()
 
@@ -75,70 +68,6 @@ class KmpAppVersionPluginTest {
         assertTrue(lines.any { it == "CURRENT_PROJECT_VERSION=42" })
         assertTrue(lines.any { it == "MARKETING_VERSION=2.1.0" })
         assertTrue(lines.any { it == "OTHER_KEY=unchanged" })
-    }
-
-    @Test
-    fun `syncIosVersion uses default version catalog keys`() {
-        versionCatalog.writeText(
-            """
-            [versions]
-            app-version-code = "7"
-            app-version-name = "0.7.0"
-            """.trimIndent()
-        )
-
-        val xcconfig = projectDir.resolve("iosApp/Config.xcconfig").also {
-            it.parentFile.mkdirs()
-            it.writeText("CURRENT_PROJECT_VERSION=0\nMARKETING_VERSION=0.0.0\n")
-        }
-
-        buildFile.writeText(
-            """
-            plugins { id("io.github.adrcotfas.kmp-app-version") }
-            kmpAppVersion {
-                xcconfigFile = file("iosApp/Config.xcconfig")
-            }
-            """.trimIndent()
-        )
-
-        runner("syncIosVersion").build()
-
-        val content = xcconfig.readText()
-        assertTrue("CURRENT_PROJECT_VERSION=7" in content)
-        assertTrue("MARKETING_VERSION=0.7.0" in content)
-    }
-
-    @Test
-    fun `syncIosVersion uses custom version catalog keys`() {
-        versionCatalog.writeText(
-            """
-            [versions]
-            my-build-number = "99"
-            my-semver = "9.9.9"
-            """.trimIndent()
-        )
-
-        val xcconfig = projectDir.resolve("iosApp/Config.xcconfig").also {
-            it.parentFile.mkdirs()
-            it.writeText("CURRENT_PROJECT_VERSION=0\nMARKETING_VERSION=0.0.0\n")
-        }
-
-        buildFile.writeText(
-            """
-            plugins { id("io.github.adrcotfas.kmp-app-version") }
-            kmpAppVersion {
-                versionCodeKey = "my-build-number"
-                versionNameKey = "my-semver"
-                xcconfigFile = file("iosApp/Config.xcconfig")
-            }
-            """.trimIndent()
-        )
-
-        runner("syncIosVersion").build()
-
-        val content = xcconfig.readText()
-        assertTrue("CURRENT_PROJECT_VERSION=99" in content)
-        assertTrue("MARKETING_VERSION=9.9.9" in content)
     }
 
     @Test
@@ -156,12 +85,7 @@ class KmpAppVersionPluginTest {
             it.writeBytes("CURRENT_PROJECT_VERSION=0\r\nMARKETING_VERSION=0.0.0\r\n".toByteArray())
         }
 
-        buildFile.writeText(
-            """
-            plugins { id("io.github.adrcotfas.kmp-app-version") }
-            kmpAppVersion { xcconfigFile = file("iosApp/Config.xcconfig") }
-            """.trimIndent()
-        )
+        buildFile.writeText("plugins { id(\"io.github.adrcotfas.kmp-app-version\") }")
 
         runner("syncIosVersion").build()
 
@@ -208,12 +132,7 @@ class KmpAppVersionPluginTest {
             it.writeText("CURRENT_PROJECT_VERSION=0\n")
         }
 
-        buildFile.writeText(
-            """
-            plugins { id("io.github.adrcotfas.kmp-app-version") }
-            kmpAppVersion { xcconfigFile = file("iosApp/Config.xcconfig") }
-            """.trimIndent()
-        )
+        buildFile.writeText("plugins { id(\"io.github.adrcotfas.kmp-app-version\") }")
 
         val result = runner("syncIosVersion").buildAndFail()
 
