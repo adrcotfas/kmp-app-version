@@ -1,5 +1,5 @@
 [versions]
-kmp-app-version = "1.0.1"
+kmp-app-version = "1.0.2"
 agp = "9.1.1"
 gradle-plugin-publish = "2.0.0"
 junit = "5.11.4"

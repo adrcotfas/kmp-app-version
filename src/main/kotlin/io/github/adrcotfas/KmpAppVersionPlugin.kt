@@ -95,7 +95,7 @@ class KmpAppVersionPlugin : Plugin<Project> {
         val original = xcconfig.readText()
         val lineEnding = if ("\r\n" in original) "\r\n" else "\n"
         val trailingNewline = original.endsWith("\n")
-        val updated = original.lines().joinToString(lineEnding) { line ->
+        val updated = original.trimEnd('\r', '\n').lines().joinToString(lineEnding) { line ->
             when {
                 line.startsWith("CURRENT_PROJECT_VERSION=") -> "CURRENT_PROJECT_VERSION=$versionCode"
                 line.startsWith("MARKETING_VERSION=")       -> "MARKETING_VERSION=$versionName"
