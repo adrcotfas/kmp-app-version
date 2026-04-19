@@ -39,7 +39,7 @@ tasks.test {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+    publishToMavenCentral()
     signAllPublications()
     coordinates(group.toString(), "kmp-app-version", version.toString())
     pom {
