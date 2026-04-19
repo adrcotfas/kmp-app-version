@@ -1,5 +1,5 @@
 # kmp-app-version
-
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.adrcotfas/kmp-app-version)](https://central.sonatype.com/artifact/io.github.adrcotfas/kmp-app-version)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 A Gradle plugin that keeps your Android and iOS app versions in sync from a single source of truth: the Gradle version catalog (`libs.versions.toml`).
