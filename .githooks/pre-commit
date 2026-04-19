@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERSION=$(grep -E '^kmp-app-version\s*=' gradle/libs.versions.toml | sed 's/.*"\(.*\)"/\1/')
+sed -i '' "s/kmp-app-version = \"[^\"]*\"/kmp-app-version = \"$VERSION\"/" README.md
+git add README.md

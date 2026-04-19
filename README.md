@@ -22,7 +22,7 @@ No more updating versions in multiple places.
 app-version-code = "1"
 app-version-name = "1.0"
 
-kmp-app-version = "1.0.0"
+kmp-app-version = "1.0.1"
 
 [plugins]
 kmp-app-version = { id = "io.github.adrcotfas.kmp-app-version", version.ref = "kmp-app-version" }

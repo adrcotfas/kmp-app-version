@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.adrcotfas"
-version = "1.0.0"
+version = libs.versions.kmp.app.version.get()
 
 val pluginName = "KMP App Version"
 val pluginDescription =
@@ -36,6 +36,13 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+afterEvaluate {
+    ProcessBuilder("git", "config", "core.hooksPath", ".githooks")
+        .directory(projectDir)
+        .start()
+        .waitFor()
 }
 
 mavenPublishing {
